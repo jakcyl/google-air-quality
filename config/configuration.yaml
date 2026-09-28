@@ -1,0 +1,5 @@
+default_config:
+logger:
+  default: info
+  logs:
+    custom_components.google_air_quality_custom: debug

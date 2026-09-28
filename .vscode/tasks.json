@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Setup",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/setup",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Home Assistant",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/develop",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/lint",
+      "problemMatcher": []
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/pytest",
+      "problemMatcher": []
+    }
+  ]
+}

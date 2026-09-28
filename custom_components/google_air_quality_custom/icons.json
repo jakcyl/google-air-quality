@@ -1,0 +1,9 @@
+{
+  "entity": {
+    "sensor": {
+      "aqi": { "default": "mdi:air-filter" },
+      "health_recommendations": { "default": "mdi:heart-pulse" },
+      "data_timestamp": { "default": "mdi:clock-check-outline" }
+    }
+  }
+}

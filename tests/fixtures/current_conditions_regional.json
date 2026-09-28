@@ -1,0 +1,68 @@
+{
+  "dateTime": "2026-09-28T10:00:00Z",
+  "regionCode": "it",
+  "indexes": [
+    {
+      "code": "ita_moniqa",
+      "displayName": "Qualità dell'aria (IT)",
+      "aqiDisplay": "3",
+      "category": "Buona",
+      "dominantPollutant": "no2"
+    },
+    {
+      "code": "uaqi",
+      "displayName": "Universal AQI",
+      "aqi": 52,
+      "aqiDisplay": "52",
+      "category": "Good air quality",
+      "dominantPollutant": "no2"
+    }
+  ],
+  "pollutants": [
+    {
+      "code": "pm25",
+      "displayName": "PM2.5",
+      "fullName": "Fine particulate matter (<2.5µm)",
+      "concentration": { "value": 9.4, "units": "MICROGRAMS_PER_CUBIC_METER" }
+    },
+    {
+      "code": "pm10",
+      "displayName": "PM10",
+      "fullName": "Inhalable particulate matter (<10µm)",
+      "concentration": { "value": 15.1, "units": "MICROGRAMS_PER_CUBIC_METER" }
+    },
+    {
+      "code": "co",
+      "displayName": "CO",
+      "fullName": "Carbon monoxide",
+      "concentration": { "value": 355.0, "units": "PARTS_PER_BILLION" }
+    },
+    {
+      "code": "no2",
+      "displayName": "NO2",
+      "fullName": "Nitrogen dioxide",
+      "concentration": { "value": 18.7, "units": "PARTS_PER_BILLION" }
+    },
+    {
+      "code": "o3",
+      "displayName": "O3",
+      "fullName": "Ozone",
+      "concentration": { "value": 31.2, "units": "PARTS_PER_BILLION" }
+    },
+    {
+      "code": "so2",
+      "displayName": "SO2",
+      "fullName": "Sulphur dioxide",
+      "concentration": { "value": 2.4, "units": "PARTS_PER_BILLION" }
+    }
+  ],
+  "healthRecommendations": {
+    "generalPopulation": "Air quality is good. Enjoy your usual outdoor activities.",
+    "elderly": "Air quality is good. Enjoy your usual outdoor activities.",
+    "lungDiseasePopulation": "Air quality is good. Enjoy your usual outdoor activities.",
+    "heartDiseasePopulation": "Air quality is good. Enjoy your usual outdoor activities.",
+    "athletes": "Air quality is good. Enjoy your usual outdoor activities.",
+    "pregnantWomen": "Air quality is good. Enjoy your usual outdoor activities.",
+    "children": "Air quality is good. Enjoy your usual outdoor activities."
+  }
+}

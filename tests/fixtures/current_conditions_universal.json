@@ -1,0 +1,52 @@
+{
+  "dateTime": "2026-09-28T10:00:00Z",
+  "regionCode": "it",
+  "indexes": [
+    {
+      "code": "uaqi",
+      "displayName": "Universal AQI",
+      "aqi": 45,
+      "aqiDisplay": "45",
+      "category": "Good air quality",
+      "dominantPollutant": "pm25"
+    }
+  ],
+  "pollutants": [
+    {
+      "code": "pm25",
+      "displayName": "PM2.5",
+      "fullName": "Fine particulate matter (<2.5µm)",
+      "concentration": { "value": 8.6, "units": "MICROGRAMS_PER_CUBIC_METER" }
+    },
+    {
+      "code": "pm10",
+      "displayName": "PM10",
+      "fullName": "Inhalable particulate matter (<10µm)",
+      "concentration": { "value": 14.2, "units": "MICROGRAMS_PER_CUBIC_METER" }
+    },
+    {
+      "code": "co",
+      "displayName": "CO",
+      "fullName": "Carbon monoxide",
+      "concentration": { "value": 324.3, "units": "PARTS_PER_BILLION" }
+    },
+    {
+      "code": "no2",
+      "displayName": "NO2",
+      "fullName": "Nitrogen dioxide",
+      "concentration": { "value": 10.2, "units": "PARTS_PER_BILLION" }
+    },
+    {
+      "code": "o3",
+      "displayName": "O3",
+      "fullName": "Ozone",
+      "concentration": { "value": 27.4, "units": "PARTS_PER_BILLION" }
+    },
+    {
+      "code": "so2",
+      "displayName": "SO2",
+      "fullName": "Sulphur dioxide",
+      "concentration": { "value": 1.8, "units": "PARTS_PER_BILLION" }
+    }
+  ]
+}

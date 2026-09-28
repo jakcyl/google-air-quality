@@ -1,0 +1,116 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "api_key": "Chiave API",
+          "language": "Lingua"
+        },
+        "data_description": {
+          "api_key": "La tua chiave API Google Cloud con l'Air Quality API abilitata.",
+          "language": "Lingua usata per le categorie AQI e le raccomandazioni sulla salute."
+        }
+      },
+      "reauth_confirm": {
+        "data": {
+          "api_key": "Chiave API"
+        },
+        "data_description": {
+          "api_key": "Inserisci una nuova chiave API per sostituire quella non più valida."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Chiave API non valida.",
+      "cannot_connect": "Impossibile connettersi all'API Google Air Quality.",
+      "unknown": "Errore imprevisto."
+    },
+    "abort": {
+      "already_configured": "Questa chiave API è già configurata.",
+      "reauth_successful": "Riautenticazione riuscita."
+    }
+  },
+  "config_subentries": {
+    "location": {
+      "initiate_flow": {
+        "user": "Aggiungi posizione"
+      },
+      "entry_type": "Posizione",
+      "step": {
+        "user": {
+          "data": {
+            "name": "Nome",
+            "location": "Posizione",
+            "aqi_source": "Sorgente AQI",
+            "region_code": "Codice regione",
+            "local_aqi": "AQI locale personalizzato",
+            "sensors": "Sensori"
+          },
+          "data_description": {
+            "name": "Usato come nome del dispositivo.",
+            "location": "Posizione sulla mappa per questa stazione di qualità dell'aria.",
+            "region_code": "Necessario solo per un AQI locale personalizzato, es. IT.",
+            "local_aqi": "Necessario solo per un AQI locale personalizzato, es. ita_moniqa."
+          }
+        },
+        "reconfigure": {
+          "data": {
+            "name": "Nome",
+            "location": "Posizione",
+            "aqi_source": "Sorgente AQI",
+            "region_code": "Codice regione",
+            "local_aqi": "AQI locale personalizzato",
+            "sensors": "Sensori"
+          }
+        }
+      },
+      "error": {
+        "invalid_location": "L'API ha rifiutato questa posizione.",
+        "custom_aqi_incomplete": "Codice regione e AQI locale personalizzato devono essere entrambi impostati, o entrambi vuoti.",
+        "custom_aqi_requires_regional": "L'AQI locale personalizzato richiede la sorgente AQI regionale.",
+        "regional_unavailable": "Nessun indice AQI regionale disponibile per questa posizione.",
+        "cannot_connect": "Impossibile connettersi all'API Google Air Quality.",
+        "invalid_auth": "Chiave API non valida.",
+        "unknown": "Errore imprevisto."
+      },
+      "abort": {
+        "already_configured": "Questa posizione è già configurata.",
+        "reconfigure_successful": "Posizione aggiornata con successo."
+      }
+    }
+  },
+  "selector": {
+    "aqi_source": {
+      "options": {
+        "universal": "AQI universale (Google)",
+        "regional": "AQI regionale (autorità locale)"
+      }
+    },
+    "sensors": {
+      "options": {
+        "aqi": "Indice qualità dell'aria",
+        "pm25": "PM2.5",
+        "pm10": "PM10",
+        "co": "Monossido di carbonio",
+        "no2": "Diossido di azoto",
+        "o3": "Ozono",
+        "so2": "Diossido di zolfo",
+        "health_recommendations": "Raccomandazioni sulla salute",
+        "data_timestamp": "Data e ora dei dati"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "aqi": {
+        "name": "Indice qualità dell'aria"
+      },
+      "health_recommendations": {
+        "name": "Raccomandazioni sulla salute"
+      },
+      "data_timestamp": {
+        "name": "Data e ora dei dati"
+      }
+    }
+  }
+}

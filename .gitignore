@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+dist/
+*.egg-info/
+config/*
+!config/configuration.yaml
+
+# Not part of the published project
+CLAUDE.md
+.claude/
+

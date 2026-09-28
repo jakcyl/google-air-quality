@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+required_major=3
+required_minor=13
+python_bin="python3"
+
+version="$("$python_bin" -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")')"
+major="${version%%.*}"
+minor="${version##*.}"
+
+if [ "$major" -lt "$required_major" ] || { [ "$major" -eq "$required_major" ] && [ "$minor" -lt "$required_minor" ]; }; then
+  echo "Error: Python >= ${required_major}.${required_minor} is required (found ${version})." >&2
+  exit 1
+fi
+
+"$python_bin" -m venv .venv
+.venv/bin/pip install --upgrade pip
+.venv/bin/pip install -e . -r requirements_dev.txt -r requirements_test.txt

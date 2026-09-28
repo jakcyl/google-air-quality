@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+.venv/bin/ruff format custom_components tests
+.venv/bin/ruff check --fix custom_components tests
+.venv/bin/mypy custom_components

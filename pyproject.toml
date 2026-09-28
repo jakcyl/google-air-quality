@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "google-air-quality-custom"
+version = "0.1.0"
+description = "Google Air Quality Home Assistant integration and standalone CLI"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.13"
+dependencies = ["aiohttp"]
+
+[project.scripts]
+gaqi = "google_air_quality_custom.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["custom_components/google_air_quality_custom"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+files = ["custom_components"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
