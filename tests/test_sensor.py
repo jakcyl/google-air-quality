@@ -79,6 +79,39 @@ async def test_aqi_state_and_attributes(
     assert state.state == "45"
     assert state.attributes["index_code"] == "uaqi"
     assert state.attributes["dominant_pollutant"] == "pm25"
+    assert state.attributes["aqi_source"] == "universal"
+    assert state.attributes["region_code"] is None
+    assert state.attributes["local_aqi"] is None
+
+
+async def test_aqi_attributes_expose_regional_custom_source(
+    hass: HomeAssistant, aioclient_mock: AiohttpClientMocker, regional_response: dict
+) -> None:
+    aioclient_mock.post(API_URL, json=regional_response)
+    entry = MockConfigEntry(domain=DOMAIN, data={"api_key": "key", "language": "en"})
+    entry.add_to_hass(hass)
+    subentry = ConfigSubentry(
+        data={
+            "name": "Torino",
+            "latitude": 45.0,
+            "longitude": 7.0,
+            "aqi_source": "regional",
+            "region_code": "IT",
+            "local_aqi": "ita_moniqa",
+            "sensors": ["aqi"],
+        },
+        subentry_type="location",
+        title="Torino",
+        unique_id="45.0000_7.0000_regional",
+    )
+    hass.config_entries.async_add_subentry(entry, subentry)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    state = hass.states.get("sensor.torino_air_quality_index")
+    assert state is not None
+    assert state.attributes["aqi_source"] == "regional"
+    assert state.attributes["region_code"] == "IT"
+    assert state.attributes["local_aqi"] == "ita_moniqa"
 
 
 async def test_pollutant_state_and_unit(

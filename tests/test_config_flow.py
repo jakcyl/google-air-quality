@@ -125,6 +125,55 @@ async def test_subentry_create_universal(
     assert subentries[0].unique_id == "45.0000_7.0000_universal"
 
 
+async def test_subentry_same_location_different_source_gets_distinct_titles(
+    hass: HomeAssistant,
+    aioclient_mock: AiohttpClientMocker,
+    regional_response: dict,
+    parent_entry: MockConfigEntry,
+) -> None:
+    """Two subentries at the same location must not end up with the same title."""
+    from homeassistant.config_entries import ConfigSubentry
+
+    hass.config_entries.async_add_subentry(
+        parent_entry,
+        ConfigSubentry(
+            data={
+                "name": "Home",
+                "latitude": 45.0,
+                "longitude": 7.0,
+                "aqi_source": "universal",
+                "region_code": None,
+                "local_aqi": None,
+                "sensors": ["aqi"],
+            },
+            subentry_type="location",
+            title="Home",
+            unique_id="45.0000_7.0000_universal",
+        ),
+    )
+
+    _mock_regional_ok(aioclient_mock, regional_response)
+    result = await hass.config_entries.subentries.async_init(
+        (parent_entry.entry_id, "location"),
+        context={"source": config_entries.SOURCE_USER},
+    )
+    result = await hass.config_entries.subentries.async_configure(
+        result["flow_id"],
+        {
+            "name": "Home",
+            "location": {"latitude": 45.0, "longitude": 7.0},
+            "aqi_source": "regional",
+            "region_code": "",
+            "local_aqi": "",
+            "sensors": ["aqi"],
+        },
+    )
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["title"] == "Home (Regional AQI)"
+    titles = {subentry.title for subentry in parent_entry.subentries.values()}
+    assert titles == {"Home", "Home (Regional AQI)"}
+
+
 async def test_subentry_custom_aqi_incomplete_error(
     hass: HomeAssistant, parent_entry: MockConfigEntry
 ) -> None:

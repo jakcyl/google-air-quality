@@ -1,6 +1,6 @@
 """Sensor entities: one per selected sensor key, per location subentry."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
@@ -140,7 +140,9 @@ async def async_setup_entry(
         subentry = entry.subentries[subentry_id]
         selected = set(subentry.data["sensors"])
         entities = [
-            GoogleAirQualitySensor(coordinator, description, subentry_id, subentry.title)
+            GoogleAirQualitySensor(
+                coordinator, description, subentry_id, subentry.title, subentry.data
+            )
             for description in SENSOR_DESCRIPTIONS
             if description.key in selected
         ]
@@ -160,9 +162,11 @@ class GoogleAirQualitySensor(CoordinatorEntity[AirQualityCoordinator], SensorEnt
         description: GoogleAirQualitySensorDescription,
         subentry_id: str,
         device_name: str,
+        subentry_data: Mapping[str, Any],
     ) -> None:
         super().__init__(coordinator)
         self.entity_description = description
+        self._subentry_data = subentry_data
         self._attr_unique_id = f"{subentry_id}_{description.key}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, subentry_id)},
@@ -179,6 +183,16 @@ class GoogleAirQualitySensor(CoordinatorEntity[AirQualityCoordinator], SensorEnt
 
     @property
     def extra_state_attributes(self) -> dict[str, Any] | None:
-        if self.entity_description.attrs_fn is None:
-            return None
-        return self.entity_description.attrs_fn(self.coordinator.data)
+        attrs = (
+            self.entity_description.attrs_fn(self.coordinator.data)
+            if self.entity_description.attrs_fn is not None
+            else None
+        )
+        if self.entity_description.key != "aqi":
+            return attrs
+        source_attrs = {
+            "aqi_source": self._subentry_data["aqi_source"],
+            "region_code": self._subentry_data.get("region_code"),
+            "local_aqi": self._subentry_data.get("local_aqi"),
+        }
+        return {**(attrs or {}), **source_attrs}

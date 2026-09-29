@@ -40,6 +40,14 @@ CONF_LOCAL_AQI = "local_aqi"
 CONF_SENSORS = "sensors"
 
 
+def _dedupe_title(base_name: str, aqi_source: AqiSource, existing_titles: set[str]) -> str:
+    """Avoid two devices at the same location sharing an identical name."""
+    if base_name not in existing_titles:
+        return base_name
+    suffix = "Universal AQI" if aqi_source is AqiSource.UNIVERSAL else "Regional AQI"
+    return f"{base_name} ({suffix})"
+
+
 def _api_key_unique_id(api_key: str) -> str:
     return hashlib.sha256(api_key.encode()).hexdigest()[:16]
 
@@ -268,12 +276,16 @@ class LocationSubentryFlow(ConfigSubentryFlow):
             if data is not None:
                 latitude, longitude = data["latitude"], data["longitude"]
                 unique_id = f"{latitude:.4f}_{longitude:.4f}_{data[CONF_AQI_SOURCE]}"
-                for existing in self._get_entry().subentries.values():
+                existing_subentries = self._get_entry().subentries.values()
+                for existing in existing_subentries:
                     if existing.unique_id == unique_id:
                         return self.async_abort(reason="already_configured")
-                return self.async_create_entry(
-                    title=data[CONF_NAME], data=data, unique_id=unique_id
+                title = _dedupe_title(
+                    data[CONF_NAME],
+                    AqiSource(data[CONF_AQI_SOURCE]),
+                    {existing.title for existing in existing_subentries},
                 )
+                return self.async_create_entry(title=title, data=data, unique_id=unique_id)
 
         schema = await self._build_schema(user_input or {})
         return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
@@ -288,16 +300,23 @@ class LocationSubentryFlow(ConfigSubentryFlow):
             if data is not None:
                 latitude, longitude = data["latitude"], data["longitude"]
                 unique_id = f"{latitude:.4f}_{longitude:.4f}_{data[CONF_AQI_SOURCE]}"
-                for existing in self._get_entry().subentries.values():
-                    if (
-                        existing.subentry_id != subentry.subentry_id
-                        and existing.unique_id == unique_id
-                    ):
+                other_subentries = [
+                    existing
+                    for existing in self._get_entry().subentries.values()
+                    if existing.subentry_id != subentry.subentry_id
+                ]
+                for existing in other_subentries:
+                    if existing.unique_id == unique_id:
                         return self.async_abort(reason="already_configured")
+                title = _dedupe_title(
+                    data[CONF_NAME],
+                    AqiSource(data[CONF_AQI_SOURCE]),
+                    {existing.title for existing in other_subentries},
+                )
                 return self.async_update_and_abort(
                     self._get_entry(),
                     subentry,
-                    title=data[CONF_NAME],
+                    title=title,
                     data=data,
                     unique_id=unique_id,
                 )
